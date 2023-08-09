@@ -10,7 +10,7 @@ class GenomicClfDataset(Dataset):
     Instance of this class can be directly wrapped by pytorch DataLoader
     """
 
-    def __init__(self, dset_name, split, force_download=False, version=None, use_cloud_cache=True):
+    def __init__(self, dset_name, split, dest_path=CACHE_PATH, force_download=False, version=None, use_cloud_cache=True):
         """
         Parameters
             dset_name : str
@@ -24,10 +24,10 @@ class GenomicClfDataset(Dataset):
             use_cloud_cache : bool
                 Whether to use the cloud cache for downloading the dataset
         """
-        base_path = CACHE_PATH / dset_name
+        base_path = dest_path / dset_name
 
-        if not is_downloaded(dset_name) or force_download:
-            download_dataset(dset_name, version=version, force_download=force_download, use_cloud_cache=use_cloud_cache)
+        if not is_downloaded(dset_name, dest_path=dest_path) or force_download:
+            download_dataset(dset_name, version=version, dest_path=dest_path, force_download=force_download, use_cloud_cache=use_cloud_cache)
 
         if split == "train" or split == "test":
             base_path = base_path / split
